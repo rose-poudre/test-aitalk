@@ -1,61 +1,147 @@
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Message Index') }}
+      {{ __('みんなの会話一覧') }}
     </h2>
   </x-slot>
-
-  <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:w-10/12 md:w-8/10 lg:w-8/12">
-      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6 bg-white border-b border-gray-200">
-          <table class="text-center w-full border-collapse">
-            <thead>
-              <tr>
-                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-lg text-grey-dark border-b border-grey-light">message</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($messages as $message)
-              <tr class="hover:bg-grey-lighter">
-                <td class="py-4 px-6 border-b border-grey-light">
-                <!-- 🔽 詳細画面へのリンク -->
-                    <a href="{{ route('message.show',$message->id) }}">
-                        <p class="text-left text-grey-dark">{{$message->user->name}}</p>
-                        <h3 class="text-left font-bold text-lg text-grey-dark">{{$message->message}}</h3>
-                    </a>
-                    <div class="flex">
-                    <!-- 🔽 条件分岐でログインしているユーザが投稿したmessageのみ編集ボタンと削除ボタンが表示される -->
-                    @if ($message->user_id === Auth::user()->id)
-                        <!-- 更新ボタン -->
-                        <form action="{{ route('message.edit',$message->id) }}" method="GET" class="text-left">
-                          @csrf
-                          <button type="submit" class="mr-2 ml-2 text-sm hover:bg-gray-200 hover:shadow-none text-white py-1 px-2 focus:outline-none focus:shadow-outline">
-                            <svg class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="black">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                          </button>
-                        </form>
-                        <!-- 🔽 削除ボタン -->
-                        <form action="{{ route('message.destroy',$message->id) }}" method="POST" class="text-left">
-                          @method('delete')
-                          @csrf
-                          <button type="submit" class="mr-2 ml-2 text-sm hover:bg-gray-200 hover:shadow-none text-white py-1 px-2 focus:outline-none focus:shadow-outline">
-                            <svg class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="black">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                          </button>
-                        </form>
-                    @endif
-                  </div>
-                </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
 </x-app-layout>
 
+
+
+<!DOCTYPE html>
+
+  <h1>賢治AI</h1>
+  <div class="container">
+    <ul class="messages">
+      <li class="left-side">
+        <div class="pic">
+          <img src="img/hitoo.png">
+        </div>
+        <div id="result-div" class="text"></div>
+      </li>
+      <li class="right-side">
+        <div class="pic">
+          <img src="img/賢治.jpeg">
+        </div>
+        <div id="result-div2" class="text"></div>
+      </li>
+    </ul>
+  </div>
+  <div>
+  <button id="start-btn"class="material-icons">keyboard_voice</button>
+  </div>
+  <div>
+    <input type="text" id="text_emotion">
+    <button id="emotion">感情解析</button>
+  </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+//データ受け取り//
+  // axios
+  // .get("emotion.php")
+  // .then(function (response) {
+  //   // リクエスト成功時の処理（responseに結果が入っている）
+  //   console.log(response);
+  // })
+  // .catch(function (error) {
+  //   // リクエスト失敗時の処理（errorにエラー内容が入っている）
+  //   console.log(error);
+  // })
+  // .finally(function () {
+  //   // 成功失敗に関わらず必ず実行
+  //   console.log("done!");
+  // });
+
+//データに対してtextの色を変える//※本当は徐々に色を変えたい
+// "joysad":3.0 ~0(中立)~ -3.0,
+// "likedislike":3.0 ~0(中立)~ -3.0,
+// "angerfear":3.0 ~0(中立)~ -3.0,
+
+
+  //音声認識と音声合成//
+  const startBtn = document.querySelector('#start-btn');
+  const resultDiv = document.querySelector('#result-div');
+  const resultDiv2 = document.querySelector('#result-div2');
+
+  SpeechRecognition = webkitSpeechRecognition || SpeechRecognition;
+  let recognition = new SpeechRecognition();
+
+  recognition.lang = 'ja-JP';
+
+  let finalTranscript = ''; // 確定した(黒の)認識結果
+
+  recognition.onresult = (event) => {
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      let transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript = transcript;
+      }
+      resultDiv.innerHTML = finalTranscript;
+
+      axios
+        .get(`talk.php?transcript=${finalTranscript}`)
+        .then(function (response) {
+          const reply = response.data;
+          axios
+            .get(`emotion.php?text=${response.data}`)
+            .then(function (response) {
+              // リクエスト成功時の処理（responseに結果が入っている）
+              console.log(response.data);
+
+              // リクエスト成功時の処理（responseに結果が入っている）
+              resultDiv2.innerHTML = reply;
+              // 発言を作成
+              const uttr = new SpeechSynthesisUtterance(resultDiv2.innerHTML);
+              // 発言を再生 (発言キュー発言に追加)
+              speechSynthesis.speak(uttr);
+            })
+            .catch(function (error) {
+              // リクエスト失敗時の処理（errorにエラー内容が入っている）
+              console.log(error);
+            })
+            .finally(function () {
+              // 成功失敗に関わらず必ず実行
+              console.log("done!");
+            });
+        })
+        .catch(function (error) {
+          // リクエスト失敗時の処理（errorにエラー内容が入っている）
+          console.log(error);
+        })
+        .finally(function () {
+          // 成功失敗に関わらず必ず実行
+          console.log("done!");
+        });
+      const joysad = -1;
+
+      if(joysad === 0)  {
+        $("#result-div2")
+        .css({'color':'green','font-family':'HiraginoSans-W0','font-weight': '900'});
+      }else if (joysad > 0 && joysad <= 3) {
+        $("#result-div2").css({'color':'red','font-size':'20px','font-family':'Hiragino Maru Gothic ProN','font-weight': '900'});
+      }else if (joysad < 0 && joysad >= -3) {
+        $("#result-div2").css({'color':'blue','font-size':'20px','font-family':'Hiragino Mincho ProN'});
+      };
+    }
+  }
+
+  startBtn.onclick = () => {
+    recognition.start();
+  }
+
+  </script>
+</html>

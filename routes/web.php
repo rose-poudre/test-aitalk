@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,8 @@ use App\Http\Controllers\MessageController;
 |
 */
 Route::group(['middleware' => 'auth'], function () {
-    
+    Route::post('message/{message}/favorites', [FavoriteController::class, 'store'])->name('favorites');
+    Route::post('message/{message}/unfavorites', [FavoriteController::class, 'destroy'])->name('unfavorites');
     Route::get('/message/mypage', [MessageController::class, 'mydata'])->name('message.mypage');
     Route::resource('message', MessageController::class);
 });
