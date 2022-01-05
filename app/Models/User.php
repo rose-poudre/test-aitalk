@@ -52,4 +52,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Message::class)->withTimestamps();
       }
       
+      public function myfavorites()
+      {
+          return $this->hasMany(Message::class)->orderBy('updated_at', 'desc');
+      }
+      
 }

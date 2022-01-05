@@ -22,6 +22,12 @@
             {{ __('みんなの会話一覧') }}
           </x-nav-link>
         </div>
+        <!-- 🔽 お気に入りページへのリンクを追加 -->
+        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+          <x-nav-link :href="route('message.favorite')" :active="request()->routeIs('message.favorite')">
+            {{ __('お気に入り会話一覧') }}
+          </x-nav-link>
+        </div>
         <!-- 🔽 作成ページへのリンクを追加 -->
         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
           <x-nav-link :href="route('message.create')" :active="request()->routeIs('message.create')">
@@ -89,6 +95,12 @@
       <x-responsive-nav-link :href="route('message.index')" :active="request()->routeIs('message.index')">
         {{ __('みんなの会話一覧') }}
       </x-responsive-nav-link>
+    </div>
+    <!-- 🔽 お気に入りページへのリンクを追加 -->
+    <div class="pt-2 pb-3 space-y-1">
+        <x-responsive-nav-link :href="route('message.favorite')" :active="request()->routeIs('message.favorite')">
+            {{ __('お気に入り会話一覧') }}
+        </x-responsive-nav-link>
     </div>
     <!-- 🔽 作成ページへのリンクを追加 -->
     <div class="pt-2 pb-3 space-y-1">

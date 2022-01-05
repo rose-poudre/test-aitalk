@@ -1,0 +1,163 @@
+.py-12 {
+    background-color: #f9c;
+}
+
+.main-contents {
+    background-color: #7494C0;
+}
+
+
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+
+
+.talk_container {
+  padding:0;
+  background: #7494c0;    /*トークルーム背景色 */
+  overflow: hidden;
+  max-width: 400px;
+  margin: 20px auto;
+  font-size: 80%;
+}
+
+/* 1 タイトル部分 */
+.talk_container .talk_title {
+  background: #273246;
+  padding: 10px;
+  text-align: center;
+  font-size: 150%;
+  color: #ffffff;
+}
+
+/* 2 会話部分 */
+.talk_container .talk_contents {
+  padding: 10px;
+  overflow: hidden;
+  line-height: 135%;
+}
+
+.talk_container .scroll {
+  height: 500px;
+  overflow-y: scroll;
+}
+
+/* 5 相手の会話 */
+.talk_container .talk_left {
+    /*width: 100%;*/ display: inline-block;
+    position: relative;
+    display: block;
+    margin-bottom: 5px;
+    max-width: 90%;
+    clear: both;
+}
+
+/* 6 アイコン画像 */
+.talk_container .talk_left figure {
+    width: 50px;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    padding: 0;
+    margin: 0;
+
+}
+
+/* 7 正方形を用意 */
+.talk_container .talk_left figure img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.talk_container .talk_left .talk_left-text {
+    margin-left: 70px;      /* 70px */
+    text-align: initial;
+}
+
+.talk_container .talk_left .talk_left-text .name {
+  font-size: 80%;
+  color: #ffffff;
+}
+
+/* 10 コメントエリア */
+.talk_container .talk_left .text {
+  margin: 0; display: inline-block;
+  position: relative;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #EDF1EE;  /* 吹き出し背景色 相手 */
+  color: #000000;   /* トーク文字色 相手 */
+  font-size: 11px;  /* トーク文字サイズ 相手 */
+}
+
+/* 11 吹き出し */
+.talk_container .talk_left .text::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  left: -10px;
+  top: 3px;
+  border-right: 20px solid #EDF1EE;  /* 吹き出し枠線色 相手 */
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; 
+  transform: rotate(35deg); -webkit-transform: rotate(35deg);
+}
+
+/* 12 自分の会話 */
+.talk_container .talk_right {
+    position: relative;
+    display: block;
+    margin: 5px 0;
+    max-width: 95%;
+    float: right;
+    margin-right: 5px;   /* 15px */
+    clear: both;
+}
+
+/* 13 コメントエリア */
+.talk_container .talk_right .text {
+  padding: 10px;
+  border-radius: 20px;
+  margin: 0;
+  margin-left: 80px;
+  background-color: #8de055;  /* 吹き出し背景色 自分 */
+  color: #000000;   /* トーク文字色 自分 */
+  font-size: 11px;  /* トーク文字サイズ 自分 */
+}
+
+/* 14 吹き出し */
+.talk_container .talk_right .text::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  right: -10px;
+  top: 3px;
+  border-left: 20px solid #8de055;  /* 吹き出し枠線色 自分 */
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  transform: rotate(-35deg); -webkit-transform: rotate(-35deg);
+}
+
+/* 17 既読／時間エリア 自分 */
+.talk_container .talk_right .date {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 100px;
+  text-align: right;
+  left: -25px;
+  bottom: 0px;
+  font-size: 80%;
+  color: #ffffff;
+}

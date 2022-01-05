@@ -44,7 +44,7 @@ class MessageController extends Controller
         // バリデーション
         $validator = Validator::make($request->all(), [
         'message' => 'required | max:191',
-        'emotion' => 'required',
+        'reply' => 'required',
         ]);
         // バリデーション:エラー
         if ($validator->fails()) {
@@ -61,7 +61,7 @@ class MessageController extends Controller
         // 戻り値は挿入されたレコードの情報
         $result = Message::create($request->all());
         // ルーティング「message.index」にリクエスト送信（一覧ページに移動）
-        return redirect()->route('message.index');
+        // return redirect()->route('message.index');
     }
 
     /**
@@ -134,6 +134,14 @@ class MessageController extends Controller
         $messages = User::find(Auth::user()->id)->mymessages;
         return view('message.index', [
           'messages' => $messages
+        ]);
+    }
+    
+    public function favorite()
+    {
+        $messages = Message::getAllOrderByUpdated_at();
+        return view('message.favorite', [
+        'messages' => $messages
         ]);
     }
 }

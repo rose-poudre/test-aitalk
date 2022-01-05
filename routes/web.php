@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\AxiosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('message/{message}/favorites', [FavoriteController::class, 'store'])->name('favorites');
     Route::post('message/{message}/unfavorites', [FavoriteController::class, 'destroy'])->name('unfavorites');
     Route::get('/message/mypage', [MessageController::class, 'mydata'])->name('message.mypage');
+    Route::get('/message/favorite', [MessageController::class, 'favorite'])->name('message.favorite');
     Route::resource('message', MessageController::class);
 });
 
+Route::get('/talk/{query}', 'App\Http\Controllers\AxiosController@talk');
+
+Route::get('/emotion/{reply}', 'App\Http\Controllers\AxiosController@emotion');
+
+Route::post('/insert', 'App\Http\Controllers\MessageController@store');
 
 Route::get('/', function () {
     return view('welcome');
