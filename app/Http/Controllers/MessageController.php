@@ -100,7 +100,7 @@ class MessageController extends Controller
         //バリデーション
         $validator = Validator::make($request->all(), [
             'message' => 'required | max:191',
-            'emotion' => 'required',
+            'reply' => 'required',
         ]);
         //バリデーション:エラー
         if ($validator->fails()) {
@@ -125,7 +125,8 @@ class MessageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = Message::find($id)->delete();
+        return redirect()->route('message.index');
     }
     
     public function mydata()
